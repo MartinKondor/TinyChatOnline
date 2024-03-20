@@ -5,7 +5,7 @@ function Login() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8080/api/v1/login/')
+    axios.get('http://127.0.0.1:8080/login/')
       .then(response => {
         setMessage(response.data.status);
       })

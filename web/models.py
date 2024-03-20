@@ -30,6 +30,7 @@ class User(models.Model, JsonInterface):
     email = models.EmailField(max_length=200)
     password_hash = models.CharField(max_length=200, null=True)
     created_date = models.DateTimeField(default=timezone.now, null=True)
+    last_login = models.DateTimeField(default=timezone.now, null=True)
 
     @staticmethod
     def make_password(password, *args, **kwargs) -> str:
