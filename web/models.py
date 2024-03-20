@@ -32,11 +32,11 @@ class User(models.Model, JsonInterface):
     created_date = models.DateTimeField(default=timezone.now, null=True)
 
     @staticmethod
-    def make_password(password, *args, **kwargs):
+    def make_password(password, *args, **kwargs) -> str:
         return make_password(password, *args, **kwargs)
 
     @staticmethod
-    def check_password(*args, **kwargs):
+    def check_password(*args, **kwargs) -> bool:
         return check_password(*args, **kwargs)
 
     def __str__(self):

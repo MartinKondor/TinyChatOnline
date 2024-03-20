@@ -5,15 +5,18 @@ from django.contrib.auth import (
     login as django_login,
     logout as django_logout
 )
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
+@api_view(['GET', 'POST'])
 def login(request):
     """
     Log in the user if the password is correct
     """
     if request.method == "POST":
         pass
-    return HttpResponse("login")
+    return Response({'message': 'login'})
 
 
 def signup(request):

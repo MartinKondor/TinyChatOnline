@@ -13,6 +13,8 @@ This is the online and modernized version of [TinyChat](https://github.com/Marti
 Install dependencies:
 ```commandline
 py -m pip install -r requirements.txt
+cd web/src
+npm i
 ```
 
 Configure the database in the `TinyChatOnline/settings.py` file then migrate:
@@ -21,9 +23,11 @@ py manage.py makemigrations
 py manage.py migrate
 ```
 
-Then run the server wit your `HOST` and `PORT`:
+Then run the server & react:
 ```commandline
-py manage.py runserver <HOST>:<PORT>
+py manage.py runserver 127.0.0.1:8080
+cd web/src
+npm start
 ```
 
 ## Custom Commands

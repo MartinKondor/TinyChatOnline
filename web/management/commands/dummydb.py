@@ -3,6 +3,7 @@ import string
 
 from django.core.management.base import BaseCommand
 from model_bakery import baker
+from tqdm import tqdm
 
 from ...models import User, Message
 
@@ -19,6 +20,11 @@ class Command(BaseCommand):
         # Create 10 users
         users = [baker.make(User) for i in range(10)]
         user_ids = [user.id for user in users]
+
+        # Set a password for each user
+        for user in tqdm(users, desc="Creating user passwords"):
+            user.password_hash = User.make_password("test")
+            user.save()
 
         # Choose pairs to create messages
         message_id_pairs = []
