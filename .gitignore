@@ -1,3 +1,6 @@
+# React #
+node_modules/
+
 # Django #
 *.log
 *.pot
