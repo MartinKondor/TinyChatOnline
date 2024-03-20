@@ -1,33 +1,44 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth import (
+    authenticate,
+    login as django_login,
+    logout as django_logout
+)
 
 
-def login():
+def login(request):
     """
     Log in the user if the password is correct
     """
+    if request.method == "POST":
+        pass
     return HttpResponse("login")
 
 
-def signup():
+def signup(request):
     """
     Register the user if the given email is not
     already in use
     """
+    if request.method == "POST":
+        pass
     return HttpResponse("signup")
 
 
-def logout():
+def logout(request):
     """
     Log out the user
     """
     return HttpResponse("logout")
 
 
-def settings():
+def settings(request):
     """
     The user is able to set it's email, and can delete itself
     """
+    if request.method == "POST":
+        pass
     return HttpResponse("settings")
 
 
@@ -43,4 +54,6 @@ def chat(request, id_or_email):
     """
     Chat with the other person based on its id_or_email
     """
+    if request.method == "POST":
+        pass
     return HttpResponse("chat_by_email")

@@ -26,6 +26,23 @@ Then run the server wit your `HOST` and `PORT`:
 py manage.py runserver <HOST>:<PORT>
 ```
 
+## Custom Commands
+
+### Test/Dummy Database
+
+To test the application with example data, you can run the command:
+```commandline
+py manage.py dummydb
+```
+Which will create some dummy data in the database.
+
+### Clear Database
+
+To delete every row from the database, you can run the following command:
+```commandline
+py manage.py cleardb
+```
+
 ## Features
 
 * Log-In/Sign-Up with email/username
