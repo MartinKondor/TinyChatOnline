@@ -1,3 +1,4 @@
+import math
 import json
 from datetime import datetime
 
@@ -155,6 +156,7 @@ def index(request):
     by their emails
     """
     current_user = request.session.get('current_user')
+    page = request.query_params.get('page')
     context = {'status': '1', 'current_user': current_user}
 
     # Different context, depending on the user
@@ -166,9 +168,11 @@ def index(request):
 
     # Pagination
     paginator = PageNumberPagination()
+    paginator.page = page
     paginator.page_size = 5  # Number of users per page
     paginated_users = paginator.paginate_queryset(context["users"], request)
 
+    context['max_page'] = math.ceil(len(context['users']) / paginator.page_size)
     context["users"] = sorted(paginated_users, key=lambda u: u.last_login, reverse=True)
     return Response(context)
 

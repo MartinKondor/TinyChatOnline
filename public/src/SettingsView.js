@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Checkbox } from '@mui/material';
+import { Button, Typography, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Checkbox } from '@mui/material';
 import APIRequest from './API';
 
 const SettingsView = ({ currentUser }) => {
@@ -21,7 +21,7 @@ const SettingsView = ({ currentUser }) => {
       }
     };
     fetchUserSettings();
-  }, []);
+  }, [currentUser]);
 
   const handleUpdateSettings = async () => {
     try {
