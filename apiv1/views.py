@@ -120,7 +120,7 @@ def settings(request):
     """
     The user is able to set its email, and can delete itself
     """
-    current_user = request.session['current_user']
+    current_user = request.session.get('current_user', request.data.get('current_user'))
     if current_user is None:
         return Response({'status': '0', 'msg': 'User is not authenticated'})
 

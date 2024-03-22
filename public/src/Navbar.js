@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, IconButton, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 
@@ -18,20 +18,28 @@ const Navbar = ({ currentUser }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6">
-            TinyChatOnline
+            {currentUser ? (
+              <>
+                TinyChatOnline : {currentUser.email}
+              </>
+            ) : (
+              <>
+                TinyChatOnline
+              </>
+            )}
           </Typography>
+          <Box sx={{ flexGrow: 1 }} />
           <Button color="inherit" component={Link} to="/">Home</Button>
-          <Button color="inherit" component={Link} to="/chats">Chats</Button>
-          <Button color="inherit" component={Link} to="/settings">Settings</Button>
           {currentUser ? (
             <>
-              <Button color="inherit" component={Link} to="/profile">{currentUser.email}</Button>
+              <Button color="inherit" component={Link} to="/chats">Chats</Button>
+              <Button color="inherit" component={Link} to="/settings">Settings</Button>
               <Button color="inherit" component={Link} to="/logout">Logout</Button>
             </>
           ) : (
             <>
-              <Button color="inherit" component={Link} to="/login">Login</Button>
               <Button color="inherit" component={Link} to="/signup">Sign Up</Button>
+              <Button color="inherit" component={Link} to="/login">Login</Button>
             </>
           )}
         </Toolbar>

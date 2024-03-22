@@ -10,19 +10,20 @@ import LogInView from './LogInView';
 import ChatsView from './ChatsView';
 import ChatView from './ChatView';
 import SettingsView from './SettingsView';
+import LogOutView from './LogOutView';
 
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
-        const response = await APIRequest("/current_user");
-        if (response != null) {
-          setCurrentUser(response.current_user);
-        }
-    };
-    fetchData();
-}, []);
+      const fetchData = async () => {
+          const response = await APIRequest("current_user");
+          if (response != null) {
+            setCurrentUser(response.current_user);
+          }
+      };
+      fetchData();
+  }, []);
 
   return (
   <Router>
@@ -30,8 +31,9 @@ function App() {
       <Navbar currentUser={currentUser} />
       <Routes>
         <Route exact path="/" element={<IndexView />} />
-        <Route exact path="/login" element={<LogInView />} />
-        <Route exact path="/signup" element={<SignUpView />} />
+        <Route exact path="/login" element={<LogInView setCurrentUser={setCurrentUser} />} />
+        <Route exact path="/signup" element={<SignUpView setCurrentUser={setCurrentUser} />} />
+        <Route exact path="/logout" element={<LogOutView setCurrentUser={setCurrentUser} />} />
         <Route exact path="/chats" element={<ChatsView />} />
         <Route exact path="/chat/:id" element={<ChatView />} />
         <Route exact path="/settings" element={<SettingsView />} />
