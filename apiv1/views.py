@@ -158,13 +158,11 @@ def index(request):
     context = {'status': '1', 'current_user': current_user}
 
     # Different context, depending on the user
+    users = User.objects.all()
     if current_user is None:
-        pass
+        context["users"] = users
     else:
-        pass
-
-    # For now, just the same context for everyone
-    context["users"] = [u for u in User.objects.all() if u.id != current_user['id']]
+        context["users"] = [u for u in users if u.id != current_user['id']]
 
     # Pagination
     paginator = PageNumberPagination()
