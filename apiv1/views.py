@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from .models import User, Message
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def login(request):
     """
     Log in the user if the password is correct
@@ -26,42 +26,43 @@ def login(request):
     if request.user.is_authenticated:
         return redirect("/")
 
-    if request.method == "POST":
-        try:
-            body = json.loads(request.body.decode("utf-8"))
-        except json.JSONDecodeError:
-            return Response({'status': '0', 'msg': 'Bad request (1.)'})
+    try:
+        body = json.loads(request.body.decode("utf-8"))
+    except json.JSONDecodeError:
+        return Response({'status': '0', 'msg': 'Bad request (1.)'})
 
-        email = body.get("email")
-        password = body.get("password")
+    email = body.get("email")
+    password = body.get("password")
 
-        if email is None or password is None:
-            return Response({'status': '0', 'msg': 'Bad request (2.)'})
+    if email is None or password is None:
+        return Response({'status': '0', 'msg': 'Bad request (2.)'})
 
-        user = User.objects.filter(email=email).first()
-        if user is None:
-            return Response({'status': '0', 'msg': 'Wrong password or email'})
+    user = User.objects.filter(email=email).first()
+    if user is None:
+        return Response({'status': '0', 'msg': 'Wrong password or email'})
 
-        if User.check_password(user.password_hash, password):
-            return Response({'status': '0', 'msg': 'Wrong password or email'})
+    if User.check_password(user.password_hash, password):
+        return Response({'status': '0', 'msg': 'Wrong password or email'})
 
-        current_user = authenticate(request, username=user.email, password=password)
-        django_login(request, user)
-        return Response({'status': '1'})
+    request.user = user
+    request.user.is_authenticated = True
     return Response({'status': '1'})
 
 
 @api_view(['GET'])
 def current_user(request):
+    print(request.session)
     try:
-        cu = User.objects.get(email=request.user.username).to_dict()
-        return Response({'status': '0', 'user': cu})
+        cu = None
+        if request.user.is_authenticated:
+            cu = User.objects.filter(email__contains=request.user.username).first().to_dict()
+        return Response({'status': '1', 'user': cu})
     except Exception as e:
         print(e)
         return Response({'status': '0', 'user': None})
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def signup(request):
     """
     Register the user if the given email is not
@@ -70,20 +71,16 @@ def signup(request):
     if request.user.is_authenticated:
         return redirect("/")
 
-    if request.method == "POST":
-        return Response({'status': '0'})
-    return Response({'status': '1'})
+    return Response({'status': '0'})
 
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def logout(request):
     """
     Log out the user
     """
-    if not request.user.is_authenticated:
-        return redirect("/login")
-
     try:
+        request.user = None
         django_logout(request)
     except Exception as e:
         print(e)
@@ -104,7 +101,7 @@ def settings(request):
     return Response({'status': '1'})
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def index(request):
     """
     The user can search for other users in the database
