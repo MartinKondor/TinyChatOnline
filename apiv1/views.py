@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -163,7 +164,14 @@ def index(request):
         pass
 
     # For now, just the same context for everyone
-    context["users"] = User.objects.all()
+    context["users"] = [u for u in User.objects.all() if u.id != current_user['id']]
+
+    # Pagination
+    paginator = PageNumberPagination()
+    paginator.page_size = 5  # Number of users per page
+    paginated_users = paginator.paginate_queryset(context["users"], request)
+
+    context["users"] = sorted(paginated_users, key=lambda u: u.last_login, reverse=True)
     return Response(context)
 
 
