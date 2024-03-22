@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import axios from 'axios';
+
 import Navbar from './Navbar';
 import Footer from './Footer';
 
@@ -14,6 +16,8 @@ import LogOutView from './LogOutView';
 
 
 function App() {
+  // axios.defaults.withCredentials = true;
+
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
       const fetchData = async () => {

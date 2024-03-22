@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-async function APIRequest(path, method = 'get', data = null) {
+async function APIRequest(path, method = 'get', data = {}) {
     try {
         let response;
         if (method.toLowerCase() === 'post') {
