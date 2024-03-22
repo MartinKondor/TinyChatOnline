@@ -98,3 +98,12 @@ class Message(models.Model, JsonInterface):
     from_user_id = models.IntegerField()  # Foreign key
     to_user_id = models.IntegerField()  # Foreign key
     created_date = models.DateTimeField(default=timezone.now)
+
+    @staticmethod
+    def send(text: str, from_user_id: str | int, to_user_id: str | int):
+        message = Message()
+        message.text = text
+        message.from_user_id = from_user_id
+        message.to_user_id = to_user_id
+        message.save()
+        return message

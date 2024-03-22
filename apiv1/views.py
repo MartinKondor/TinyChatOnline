@@ -176,7 +176,7 @@ def index(request):
 
 
 @api_view(['GET', 'POST'])
-def chat(request, id_or_email):
+def chat(request, id):
     """
     Chat with the other person based on its id_or_email
     """
@@ -184,6 +184,35 @@ def chat(request, id_or_email):
     if current_user is None:
         return Response({'status': '0', 'msg': 'User is not authenticated'})
 
+    if id == current_user['id']:
+        return Response({'status': '0', 'msg': 'Not allowed to message yourself'})
+
+    # Find the other user
+    try:
+        other_user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        return Response({'status': '0', 'msg': f'Cannot find the other user: {id}'})
+
     if request.method == "POST":
-        return Response({'status': '0'})
-    return Response({'status': '1'})
+        text = request.data['text']
+
+        # Validation of user input
+        is_valid_text = lambda text: len(str(text)) > 0 and text is not None and text != 'None'
+        if not is_valid_text(text):
+            return Response({'status': '0', 'msg': 'Nothing to send'})
+        else:
+            message = Message.send(
+                text=text,
+                from_user_id=current_user['id'],
+                to_user_id=id
+            )
+            return Response({'status': '1', 'msg': 'Message sent', 'sent_message': message})
+
+    messages = Message.objects.filter(from_user_id=current_user['id'], to_user_id=other_user.id)
+    messages = sorted(messages, key=lambda m: m.created_date, reverse=False)
+    return Response({
+        'status': '1',
+        'current_user': current_user,
+        'other_user': other_user,
+        'messages': messages
+    })
