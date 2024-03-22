@@ -47,6 +47,10 @@ To delete every row from the database, you can run the following command:
 py manage.py cleardb
 ```
 
+## Testing
+
+You can use the shared [Postman](https://api.postman.com/collections/33777629-ad8e9320-a943-4377-9668-5d8aff884cf2?access_key=PMAT-01HSJKKTN8D4AB36Z5DT1KWG05) collection.
+
 ## Features
 
 * Log-In/Sign-Up with email/username

@@ -1,5 +1,7 @@
 import json
 
+import json_fix
+
 
 class JsonInterface:
     """
@@ -18,5 +20,11 @@ class JsonInterface:
 
         return obj
 
-    def to_json(self, indent=4):
-        return json.dumps(self.to_dict(), indent=indent)
+    def __dict__(self):
+        return self.to_dict()
+
+    def __json__(self):
+        return self.to_dict()
+
+    def __str__(self):
+        return json.dumps(self.to_dict(), indent=2)

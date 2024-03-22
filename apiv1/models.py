@@ -12,6 +12,14 @@ class User(models.Model, JsonInterface):
     last_login = models.DateTimeField(default=timezone.now, null=True)
 
     @staticmethod
+    def signup(email, password):
+        user = User()
+        user.email = email
+        user.password_hash = User.make_password(password)
+        user.save()
+        return user
+
+    @staticmethod
     def make_password(password, *args, **kwargs) -> str:
         return make_password(password, *args, **kwargs)
 

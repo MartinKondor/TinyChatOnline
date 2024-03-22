@@ -19,6 +19,12 @@ class Command(BaseCommand):
 
         # Create 10 users
         users = [baker.make(User) for i in range(10)]
+
+        # Adding admin user
+        admin_user = baker.make(User)
+        admin_user.email = 'admin@admin.com'
+        users.append(admin_user)
+
         user_ids = [user.id for user in users]
 
         # Set a password for each user
